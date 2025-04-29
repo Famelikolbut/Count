@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: .
+      args:
+        DBPASSWORD: ${DB_PASSWORD}
+        DBUSER: ${DB_USER}
+      dockerfile: db.Dockerfile
+    container_name: my_postgres_db
+    env_file:
+      - .env
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5431:5431"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: my_web_app
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    volumes:
+      - .:/code
+
+volumes:
+  postgres_data:

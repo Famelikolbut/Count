@@ -1,0 +1,11 @@
+/staticfiles/
+.vscode/
+env/
+.idea
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
